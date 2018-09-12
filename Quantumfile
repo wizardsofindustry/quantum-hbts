@@ -94,10 +94,12 @@ environ:
     default: '8443'
     comment: Bind port for the HTTP interface.
   - name: TSA_REQUEST_URI
-    default: "https://freetsa.org/tsr"
+    default: https://freetsa.org/tsr
     comment: >
-      Specifies the request URI at which the Time Stamping Authority (TSA)
-      accepts POST requests of type `application/timestamp-query`.
+      Specifies the request URI at which the Time Stamping Authority (TSA) accepts
+      POST requests of type `application/timestamp-query`.
+    type: "literal"
+
 
 # The application is currently not configured as an event listener. To
 # enable this feature, add the 'listener' role to the #/app/roles list.
