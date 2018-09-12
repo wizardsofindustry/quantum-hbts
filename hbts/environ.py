@@ -40,6 +40,8 @@ os.environ.setdefault('HBTS_HTTP_ADDR',
     "0.0.0.0")
 os.environ.setdefault('HBTS_HTTP_PORT',
     "8443")
+os.environ.setdefault('HBTS_TSA_REQUEST_URI',
+    "https://freetsa.org/tsr")
 
 
 SECRET_KEY = os.getenv('HBTS_SECRET_KEY')
@@ -49,6 +51,7 @@ IOC_DIR = os.getenv('HBTS_IOC_DIR')
 RDBMS_DSN = os.getenv('HBTS_RDBMS_DSN')
 HTTP_ADDR = os.getenv('HBTS_HTTP_ADDR')
 HTTP_PORT = os.getenv('HBTS_HTTP_PORT')
+TSA_REQUEST_URI = os.getenv('HBTS_TSA_REQUEST_URI')
 DEPLOYMENT_ENV = os.getenv('QUANTUM_DEPLOYMENT_ENV') or 'production'
 CONFIG_DIR = os.getenv('QUANTUM_CONFIG_DIR')
 TEST_PHASE = os.getenv('SQ_TESTING_PHASE')
