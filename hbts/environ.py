@@ -36,6 +36,10 @@ os.environ.setdefault('HBTS_IOC_DIR',
     "/etc/hbts/ioc.conf.d/")
 os.environ.setdefault('HBTS_RDBMS_DSN',
     "postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts")
+os.environ.setdefault('HBTS_HTTP_ADDR',
+    "0.0.0.0")
+os.environ.setdefault('HBTS_HTTP_PORT',
+    "8443")
 
 
 SECRET_KEY = os.getenv('HBTS_SECRET_KEY')
@@ -43,6 +47,8 @@ DEBUG = os.getenv('HBTS_DEBUG', '').lower() in ('yes', '1', 'true')
 IOC_DEFAULTS = os.getenv('HBTS_IOC_DEFAULTS')
 IOC_DIR = os.getenv('HBTS_IOC_DIR')
 RDBMS_DSN = os.getenv('HBTS_RDBMS_DSN')
+HTTP_ADDR = os.getenv('HBTS_HTTP_ADDR')
+HTTP_PORT = os.getenv('HBTS_HTTP_PORT')
 DEPLOYMENT_ENV = os.getenv('QUANTUM_DEPLOYMENT_ENV') or 'production'
 CONFIG_DIR = os.getenv('QUANTUM_CONFIG_DIR')
 TEST_PHASE = os.getenv('SQ_TESTING_PHASE')
