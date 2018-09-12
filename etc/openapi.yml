@@ -12,17 +12,16 @@
 openapi: "3.0.0"
 info:
   version: "1.0.0"
-  title: <provide a title for this API>
+  title: Hash-based Time Stamping (HBTS) Service
   description: >
-    The description for this API may
-    span multiple lines.
+    Provides an API to create secure time stamps of document hashes.
   termsOfService: TOS
   contact:
-    name: <enter the name of the person or entity responsible for this API>
-    url: https://api.example.com
-    email: maintainer@api.example.com
+    name: Cochise Ruhulessin
+    url: https://www.wizardsofindustry.net
+    email: cochise.ruhulessin@wizardsofindustry.net
   license:
-    name: <enter your license>
+    name: MIT
 paths:
   /health/:
     summary: Reports the general health of the application.
@@ -65,6 +64,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Version"
+        503:
+          $ref: "#/components/responses/ServiceNotAvailable"
+        default:
+          $ref: "#/components/responses/UncaughException"
+
+  /timestamp:
+    summary: >
+      Exposes an API to create and verify secure timestamps using an upstream
+      Time Stamping Authority (TSA).
+    x-endpoint:
+      classname: TimestampEndpoint
+      controller:
+        qualname: hbts.app.ctrl.TimestampCtrl
+    post:
+      operationId: timestamp
+      requestBody:
+        description: >
+          Contains a SHA-256 hash of the document that must be time stamped.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimestampingRequest"
+      responses:
+        201:
+          description: >
+            The TSA has signed the input data and the result is stored in the
+            backend storage system.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SecureTimestamp"
+        409:
+          description: >
+            A secure timestamp already exists for the input data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimestampExists"
         503:
           $ref: "#/components/responses/ServiceNotAvailable"
         default:
@@ -158,6 +195,25 @@ components:
           type: string
           format: uuid
 
+    SecureTimestamp:
+      type: object
+      nullable: false
+      required:
+      - protocol
+      - tsa
+      properties:
+        protocol:
+          description: >
+            Specifies the protocol that was used to create the secure time stamp.
+          type: string
+          enum:
+          - rfc3161
+        tsa:
+          description: >
+            Specifies the Time Stamping Authority (TSA) that handled the time stamping
+            request.
+          type: string
+
     ServiceNotAvailable:
       type: object
       nullable: false
@@ -174,6 +230,50 @@ components:
         code:
           description: >
             Specifies the cause of service unavailability.
+          type: string
+        message:
+          description: >
+            Error message targeted at the end-user.
+          type: string
+        detail:
+          description: >
+            A message providing a more detailed explanation of the reasons
+            why the service is not available.
+          type: string
+        hint:
+          description: >
+            A hint indicating on how to resolve the situation.
+          type: string
+
+    TimestampingRequest:
+      type: object
+      nullable: false
+      required:
+      - checksum
+      properties:
+        checksum:
+          description: >
+            A SHA-256 hash of the document for which a secure time stamp must
+            be generated.
+          type: string
+
+    TimestampExists:
+      type: object
+      nullable: false
+      example:
+        code: "TIMESTAMP_EXISTS"
+        detail: "The document (checksum: 2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae
+) is already time stamped."
+        hint: "Documents that have existing time stamps can not be time stamped again."
+      required:
+      - code
+      - message
+      - detail
+      - hint
+      properties:
+        code:
+          description: >
+            A code identifying the error condition.
           type: string
         message:
           description: >
