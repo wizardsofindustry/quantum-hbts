@@ -36,6 +36,8 @@ services:
     - HBTS_IOC_DEFAULTS=/etc/hbts/ioc.conf
     - HBTS_IOC_DIR=/etc/hbts/ioc.conf.d/
     - HBTS_RDBMS_DSN=postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts
+    - HBTS_HTTP_ADDR=0.0.0.0
+    - HBTS_HTTP_PORT=8443
     depends_on:
     - rdbms
   hbts:
@@ -47,6 +49,8 @@ services:
     - HBTS_IOC_DEFAULTS=/etc/hbts/ioc.conf
     - HBTS_IOC_DIR=/etc/hbts/ioc.conf.d/
     - HBTS_RDBMS_DSN=postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts
+    - HBTS_HTTP_ADDR=0.0.0.0
+    - HBTS_HTTP_PORT=8443
     depends_on:
     - rdbms
     volumes:
