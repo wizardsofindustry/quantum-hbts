@@ -1,0 +1,26 @@
+#!/bin/sh
+export HBTS_RUNTIME=${HBTS_RUNTIME-service}
+export HBTS_CONFIG_FILE=${HBTS_CONFIG_FILE-/etc/hbts/hbts.conf}
+
+
+case $HBTS_RUNTIME in
+  migrations)
+    alembic upgrade head
+  ;;
+  shell)
+    ./bin/shell
+    break
+  ;;
+  noop)
+    break
+  ;;
+  http)
+    export HBTS_COMPONENTS="http"
+    python3 -m hbts.runtime -c $HBTS_CONFIG_FILE
+    break
+  ;;
+  service)
+    python3 -m hbts.runtime -c $HBTS_CONFIG_FILE
+    break
+  ;;
+esac
