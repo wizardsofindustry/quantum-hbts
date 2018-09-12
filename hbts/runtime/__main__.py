@@ -36,6 +36,7 @@ os.environ.setdefault('HBTS_IOC_DIR', "/etc/hbts/ioc.conf.d/")
 os.environ.setdefault('HBTS_RDBMS_DSN', "postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts")
 os.environ.setdefault('HBTS_HTTP_ADDR', "0.0.0.0")
 os.environ.setdefault('HBTS_HTTP_PORT', "8443")
+os.environ.setdefault('HBTS_TSA_REQUEST_URI', "https://freetsa.org/tsr")
 
 
 class MainProcess(sq.runtime.MainProcess):
