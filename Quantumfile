@@ -1,0 +1,229 @@
+---
+# General project information.
+project:
+  version: 1.0.0
+  name: No project name specified
+
+# This section specifies additional properties of the deployment
+# environment for the hbts service.
+deployment:
+
+  # The deployment realm is either 'perimeter' (public-facing
+  # services), 'citadel' (core internal service), business
+  # (services implementing the business domain) or 'auxilary'
+  # (supporting services).
+  realm: citadel
+
+
+# This section describes the characteristics of the SG generated
+# application.
+app:
+
+  # Indicates that the application requires a relational database systen. Quantum
+  # services are assumed to connect to one RDBMS only.
+  rdbms: true
+
+  # Specifies the roles that the application has. Valid values are
+  # 'http', 'handler', 'runner', 'listener' or 'scheduler'.
+  roles:
+  - http
+
+
+django: null
+
+
+# Basic Python package configuration and settings.
+package:
+  language: python
+
+  # This is the name of the Python module that contains the application
+  # code, and is also used as a general identifier for this service.
+  name: hbts
+
+  # Python module requirements from PyPi. Specified as in a requirements.txt,
+  # file.
+  requirements: []
+
+
+# The i18n section specifies all settings related to internationalization
+# (i18n) and localization (l10n).
+i18n:
+
+  # The i18n.default_language setting specifies the language default
+  # for all components in the Quantum service.
+  default_language: en
+
+  # Specifies all languages that may be selected either by the end-user
+  # or runtime configuration variables.
+  languages:
+  - name: English
+    code: en
+
+  # Indicates that application URLs should be translated, if
+  # applicable.
+  translate_urls: true
+
+
+# Application environment settings and variables.
+environ:
+  prefix: true # Prefix environment variables with HBTS_
+  variables:
+  - name: SECRET_KEY
+    default: 197fb52f8305c461a677256c3cb588e64936dc814e8fcda98f5a0148be514da6
+    comment: Symmetric key for cryptographic operations.
+  - name: DEBUG
+    default: '1'
+    type: "switch"
+    comment: Run the application in debug mode.
+  - name: IOC_DEFAULTS
+    default: /etc/hbts/ioc.conf
+    comments: >
+      Specifies the configuration file holding defaults for the inversion-of-control
+      context.
+  - name: IOC_DIR
+    default: /etc/hbts/ioc.conf.d/
+    comments: >
+      Specifies a directory where the application will look for inversion-of-control
+      configuration files.
+  - name: RDBMS_DSN
+    default: postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts
+
+
+# The application is currently not configured as an event listener. To
+# enable this feature, add the 'listener' role to the #/app/roles list.
+listener:
+
+  # Lists all events that the application subscribes to. This does not
+  # imply that it knows how to handle them (i.e., has a handler function
+  # configured), only that it wants to receive them.
+  events: []
+
+  # The list below configures the event handlers that are run on each
+  # incoming event message (individual handlers may choose to drop
+  # messages). Each item in the list is a dictionary, having at least
+  # a `qualname` member, specifying the Python qualified name (e.g.
+  # import path) to the event handler *class*. For more information on
+  # event handler classes, refer to the Sovereign Quantum documentation.
+  handlers:
+  - qualname: sq.event.NullEventHandler
+
+  # Specifies the channel from which this application will receive
+  # its event messages. Event messages are assumed to be routed
+  # according to the criteria specified above.
+  channel: hbts.events.ingress
+
+
+# Security related settings.
+security:
+
+  # A generic application secret that may be used, for example, to generate
+  # signed cookies or other message signatures. This value MUST NOT be used in
+  # production, and exists for development and testing purposes only.
+  secret_key: 197fb52f8305c461a677256c3cb588e64936dc814e8fcda98f5a0148be514da6
+
+  tls:
+
+    # A snakeoil X.509 certificate that is used to enable Transport Level Security (TLS)
+    # in non-production environments. Like `secret_key`, this configuration MUST NOT
+    # be used in production. Additional hostnames may be specified in the `hostnames`
+    # section.
+    hostnames:
+    - hbts
+
+    crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIBuTCCASKgAwIBAgICA+gwDQYJKoZIhvcNAQELBQAwDzENMAsGA1UEAwwEaGJ0
+      czAeFw0xODA5MTIxNjA2NTNaFw0yODA5MDkxNjA2NTNaMA8xDTALBgNVBAMMBGhi
+      dHMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAJfchIwd4HqjtiJCNP8SOtsF
+      uYbAKoI+QX4kehitX9kE3s8b2VRZCB1iGlGuj+GQ2qDucV16m2Bt8cEu+OJK7jse
+      4lOobethbsm8L8so57GwJvX1B+jgjHOPPWTr9qWf46Qt2n8SvGZNTZlH8QhcX4GL
+      mgxAtPibJ1mzlBrWLDBzAgMBAAGjJDAiMA8GA1UdEwQIMAYBAf8CAQAwDwYDVR0R
+      BAgwBoIEaGJ0czANBgkqhkiG9w0BAQsFAAOBgQAKh7RTR5wlvnZ8dK1krJIRZo/e
+      f305C2jitNLfwK8NkBl7TUhLPXlgSFY88wjz7xcrNvGhtvq/l85fOTkJZsKksGc2
+      p8FgNvOVD11v+244I/w7Sw/3YvEoHj0A1TDmO2x+LTaRjUQcV1p/O6FlZt+yqIRb
+      ldW3cP8PKA8EOHiMvQ==
+      -----END CERTIFICATE-----
+
+    key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIICXQIBAAKBgQCX3ISMHeB6o7YiQjT/EjrbBbmGwCqCPkF+JHoYrV/ZBN7PG9lU
+      WQgdYhpRro/hkNqg7nFdeptgbfHBLvjiSu47HuJTqG3rYW7JvC/LKOexsCb19Qfo
+      4Ixzjz1k6/aln+OkLdp/ErxmTU2ZR/EIXF+Bi5oMQLT4mydZs5Qa1iwwcwIDAQAB
+      AoGAQqy5LWO4uV/DicsTxaHVYXBkAnvAripzStTtHoSQfpIa2Ufa5aOpYm0+LPq9
+      hUW6F8pYz7gTHAVpjW34LDLF4VYDigoTzR8lKUjoI7Xf7zIsW/4rTjrhlOL6cmzJ
+      GrNeyvrxB1ukyQh9jMo76vMh1bmoTb7gHbwt05hKXwQ7ZHECQQDJLO5rpqSVRaIl
+      imgPZT/rP7w8kdIvVz+NUL4NvTAfciBMCZ7NyIjD8LWGKT4uIlsLnpc8XDS10HcE
+      NquETNX/AkEAwT8sNikYr2vTCBGxVstxaY24kXIU25gssHPNJkITZmpgcGpqnEiT
+      afOXlVxXC407m6I1YC6WoC2699bv9sOtjQJBAJYocGlvwAcfK5Ejxto+87/PGdyH
+      5z+ouunq64DrxoCiOdMnlx34YYUHJSbXn+7le9mnbTEDjeBrknpVqB4fD9cCQQCI
+      BaFnFhJMF8dZHKsI/vZ7Z8gMiJJp53k9UqWKUmQ5aJMtTZpxGxy4LT/7YB3dAbJ9
+      X/XWF7TqVoYOQXpy5VVZAkBGaSBrLRwMgrleSROr/W95RVGI82bTc182Xqiond+J
+      mM9bRw0o7NARdgqhglw2boPB0dLTAGQ0hQvBCY0AgQXI
+      -----END RSA PRIVATE KEY-----
+
+
+
+# A list of Quantum services that the application requires.
+#requires:
+#- url: git+https://github.com/wizardsofindustry/quantum-usr.git
+
+
+# Configuration related to the automated testing of the Quantum
+# service.
+testing:
+  min_coverage: 100
+
+
+# Docker configuration.
+docker:
+
+  # The base image for the application container. This value
+  # may be changed to use a custom image, instead of the
+  # default Quantum base image.
+  base: wizardsofindustry/quantum:latest
+
+  # Specifies the Docker repository that is used for
+  # this application, used by development tooling and
+  # the CI/CD pipeline.
+  repository: null
+
+  # CI/CD configuration for containerization and image
+  # publication.
+  ci:
+    # The credentials that the CI/CD pipeline may use to
+    # login and publish to a Docker registry.
+    credentials_id: null
+
+    # Indicates if the CI pipeline may use VCS tags to tag
+    # containers.
+    use_tags: false
+
+    # Specifies the branches that will trigger a container build
+    # by default.
+    build_branches:
+    - name: master
+      tag: latest
+    - name: develop
+      tag: latest-testing
+
+    # For pattern matched branches, the branch name is used
+    # as the container tag.
+    - pattern: "^(release|version|sprint)-.*$"
+    - pattern: "^(hotfix|fix)-.*$"
+    - pattern: "^(feature|task)-.*$"
+
+
+
+
+# This section contains SG related settings and should not be modified under
+# normal circumstances.
+sg:
+
+  # Specifies the SG project type. Allowed values are: service, system or infra.
+  type: service
+  dirname: .sg
+
+
+# Configuration file format version. Changing this will have dire
+# consequences.
+version: "1"
