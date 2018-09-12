@@ -1,1 +1,37 @@
 ---
+relations:
+- relname: rfc3161
+  classname: RFC3161Timestamp
+  description: >
+    Maintains information about document hashes that were securely
+    time stamped using plain RFC 3161.
+  columns:
+  - name: checksum
+    type: string
+    primary_key: true
+    description: >
+      A hex-encoded SHA-256 hash of the time stamped document.
+  - name: algorithm
+    type: string
+    description: >
+      Specifies the hashing algorithm of `checksum`.
+    default:
+      type: literal
+      value: "'sha256'"
+  - name: timestamp
+    type: datetime
+    description: >
+      The timestamp returned by the TSA.
+  - name: tsa
+    type: string
+    description: >
+      Identifies the Time Stamping Authority (TSA).
+  - name: crt
+    type: string
+    description: >
+      Hex-encoded SHA-256 hash of the TSA certificate in PEM
+      encoding, used to verify the response.
+  - name: tsr
+    type: binary
+    description: >
+      The response of the TSA.
