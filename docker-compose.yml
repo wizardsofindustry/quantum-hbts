@@ -38,6 +38,7 @@ services:
     - HBTS_RDBMS_DSN=postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts
     - HBTS_HTTP_ADDR=0.0.0.0
     - HBTS_HTTP_PORT=8443
+    - HBTS_TSA_REQUEST_URI=https://freetsa.org/tsr
     depends_on:
     - rdbms
   hbts:
@@ -51,6 +52,7 @@ services:
     - HBTS_RDBMS_DSN=postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts
     - HBTS_HTTP_ADDR=0.0.0.0
     - HBTS_HTTP_PORT=8443
+    - HBTS_TSA_REQUEST_URI=https://freetsa.org/tsr
     depends_on:
     - rdbms
     volumes:
