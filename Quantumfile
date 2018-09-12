@@ -87,6 +87,12 @@ environ:
       configuration files.
   - name: RDBMS_DSN
     default: postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts
+  - name: HTTP_ADDR
+    default: '0.0.0.0'
+    comment: Listen address for the HTTP interface.
+  - name: HTTP_PORT
+    default: '8443'
+    comment: Bind port for the HTTP interface.
 
 
 # The application is currently not configured as an event listener. To
@@ -205,9 +211,6 @@ docker:
       tag: latest
     - name: develop
       tag: latest-testing
-
-    # For pattern matched branches, the branch name is used
-    # as the container tag.
     - pattern: "^(release|version|sprint)-.*$"
     - pattern: "^(hotfix|fix)-.*$"
     - pattern: "^(feature|task)-.*$"
