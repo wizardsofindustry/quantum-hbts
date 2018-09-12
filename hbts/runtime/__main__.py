@@ -34,6 +34,8 @@ os.environ.setdefault('HBTS_DEBUG', "1")
 os.environ.setdefault('HBTS_IOC_DEFAULTS', "/etc/hbts/ioc.conf")
 os.environ.setdefault('HBTS_IOC_DIR', "/etc/hbts/ioc.conf.d/")
 os.environ.setdefault('HBTS_RDBMS_DSN', "postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts")
+os.environ.setdefault('HBTS_HTTP_ADDR', "0.0.0.0")
+os.environ.setdefault('HBTS_HTTP_PORT', "8443")
 
 
 class MainProcess(sq.runtime.MainProcess):
