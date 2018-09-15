@@ -2,6 +2,8 @@ FROM wizardsofindustry/quantum:latest
 
 RUN mkdir /var/lib/hbts
 RUN mkdir /var/spool/aorta
+RUN pip3 install rfc3161ng==2.0.4
+RUN pip3 install dsnparse==0.1.11
 
 COPY . /app
 COPY etc/ /etc/hbts/
