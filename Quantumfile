@@ -44,6 +44,7 @@ package:
   # file.
   requirements:
   - rfc3161ng==2.0.4
+  - dsnparse==0.1.11
 
 
 # The i18n section specifies all settings related to internationalization
