@@ -89,6 +89,9 @@ environ:
       configuration files.
   - name: RDBMS_DSN
     default: postgresql+psycopg2://hbts:hbts@rdbms:5432/hbts
+  - name: GIT_COMMIT
+    comments: >
+      The SHA-1 hash of the current Git commit.
   - name: HTTP_ADDR
     default: '0.0.0.0'
     comment: Listen address for the HTTP interface.
