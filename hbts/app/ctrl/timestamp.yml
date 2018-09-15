@@ -38,8 +38,8 @@ bases:
 # are added to the base class according to these values, e.g.
 # get(), post(), etc.
 methods:
-- GET
 - POST
+- GET
 
 
 # A list containing dependencies from the inversion-of-control
@@ -55,4 +55,6 @@ methods:
 # Make sure that all dependencies listed here are injected either
 # programmatically or using the configuration files in the
 # ./etc/ioc.conf.d directory.
-dependencies: []
+dependencies:
+- require: TimestampService
+  attname: service
