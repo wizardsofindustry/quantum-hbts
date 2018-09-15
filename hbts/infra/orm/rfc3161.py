@@ -11,15 +11,22 @@ class RFC3161Timestamp(Relation):
 
     __tablename__ = 'rfc3161'
 
-    #: A hex-encoded SHA-256 hash of the time stamped document.
+    #: A SHA-256 hash of ``(document, signed)``
     checksum = sqlalchemy.Column(
-        sqlalchemy.String,
+        sqlalchemy.LargeBinary,
         name='checksum',
+        nullable=False
+    )
+
+    #: A hex-encoded SHA-256 hash of the time stamped document.
+    document = sqlalchemy.Column(
+        sqlalchemy.String,
+        name='document',
         primary_key=True,
         nullable=False
     )
 
-    #: Specifies the hashing algorithm of `checksum`.
+    #: Specifies the hashing algorithm of `document`.
     algorithm = sqlalchemy.Column(
         sqlalchemy.String,
         name='algorithm',
@@ -41,18 +48,10 @@ class RFC3161Timestamp(Relation):
         nullable=False
     )
 
-    #: Hex-encoded SHA-256 hash of the TSA certificate in PEM encoding,
-    #: used to verify the response.
-    crt = sqlalchemy.Column(
-        sqlalchemy.String,
-        name='crt',
-        nullable=False
-    )
-
     #: The response of the TSA.
-    tsr = sqlalchemy.Column(
+    signed = sqlalchemy.Column(
         sqlalchemy.LargeBinary,
-        name='tsr',
+        name='signed',
         nullable=False
     )
 
