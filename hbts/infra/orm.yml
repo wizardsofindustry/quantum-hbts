@@ -7,6 +7,10 @@ relations:
     time stamped using plain RFC 3161.
   columns:
   - name: checksum
+    type: binary
+    description: >
+      A SHA-256 hash of ``(document, signed)``
+  - name: document
     type: string
     primary_key: true
     description: >
@@ -14,7 +18,7 @@ relations:
   - name: algorithm
     type: string
     description: >
-      Specifies the hashing algorithm of `checksum`.
+      Specifies the hashing algorithm of `document`.
     default:
       type: literal
       value: "'sha256'"
@@ -26,12 +30,7 @@ relations:
     type: string
     description: >
       Identifies the Time Stamping Authority (TSA).
-  - name: crt
-    type: string
-    description: >
-      Hex-encoded SHA-256 hash of the TSA certificate in PEM
-      encoding, used to verify the response.
-  - name: tsr
+  - name: signed
     type: binary
     description: >
       The response of the TSA.
